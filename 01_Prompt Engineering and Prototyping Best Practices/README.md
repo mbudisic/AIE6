@@ -62,8 +62,9 @@ This "vibe check" now serves as a baseline, of sorts, to help understand what ho
 
 Please make adjustments to your application that you believe will improve the vibe check done above, push the changes to your HF Space and redo the above vibe check.
 
-> Here's the updated app running on HF: <https://huggingface.co/spaces/mbudisic/llm-app>
-> Changes:
+> Here's the [updated app running on HF](https://huggingface.co/spaces/mbudisic/llm-app) and [the loom video](https://www.loom.com/share/0311a7b539ee4e75bea5e2a04c4ff5b8?sid=bfe99ce4-52ed-4198-a7c3-3e774f4af85b) - discussion thread is on [#build-ship-share](https://discord.com/channels/1135695983720792216/1135700320517890131/1357344146762760202):
+>
+> Changes to the "stock" chainlit app:
 >
 > 1. Added buttons that automate vibe checking prompts.
 > 1. Added env variable `BEYOND_MODEL` that allows changing the model.
