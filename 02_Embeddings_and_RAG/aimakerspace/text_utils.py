@@ -4,7 +4,7 @@ from typing import List
 
 class TextFileLoader:
     def __init__(self, path: str, encoding: str = "utf-8"):
-        self.documents = []
+        self.documents: List[str] = []
         self.path = path
         self.encoding = encoding
 
@@ -13,14 +13,38 @@ class TextFileLoader:
             self.load_directory()
         elif os.path.isfile(self.path) and self.path.endswith(".txt"):
             self.load_file()
+        elif os.path.isfile(self.path) and self.path.endswith(".pdf"):
+            self.load_PDF()
         else:
             raise ValueError(
-                "Provided path is neither a valid directory nor a .txt file."
+                "Provided path is neither a valid directory "
+                "nor a supported file type (.txt, .pdf)."
             )
 
     def load_file(self):
         with open(self.path, "r", encoding=self.encoding) as f:
             self.documents.append(f.read())
+
+    def load_PDF(self):
+        """Load a PDF file and extract its text content.
+
+        Requires PyPDF2 to be installed.
+        """
+        try:
+            import PyPDF2  # type: ignore
+        except ImportError:
+            raise ImportError(
+                "PyPDF2 is required for PDF parsing. "
+                "Install it with 'pip install PyPDF2'"
+            )
+
+        with open(self.path, "rb") as f:
+            pdf_reader = PyPDF2.PdfReader(f)
+            text = ""
+            for page_num in range(len(pdf_reader.pages)):
+                page = pdf_reader.pages[page_num]
+                text += page.extract_text()
+            self.documents.append(text)
 
     def load_directory(self):
         for root, _, files in os.walk(self.path):
@@ -42,9 +66,9 @@ class CharacterTextSplitter:
         chunk_size: int = 1000,
         chunk_overlap: int = 200,
     ):
-        assert (
-            chunk_size > chunk_overlap
-        ), "Chunk size must be greater than chunk overlap"
+        assert chunk_size > chunk_overlap, (
+            "Chunk size must be greater than chunk overlap"
+        )
 
         self.chunk_size = chunk_size
         self.chunk_overlap = chunk_overlap
