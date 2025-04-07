@@ -34,27 +34,48 @@ Each assignment will have a few of the following categories of exercises:
 
 ##### 🏗️ Activity #1
 
-Please evaluate your system on the following questions:
+Please evaluate your system (`gpt-turbo-3.5`) on the following questions:
 
 1. Explain the concept of object-oriented programming in simple terms to a complete beginner.
 
     - Aspect Tested:
 
+> Aspect: Explanation of technical information contained out-of-context in a particular style. Conceptually, the answer is not incorrect (from a perspective of a writing for a non-technical person), but the style is not great - it is following the step-by-step approach too literally, assigning its sentences to steps even though it is not describing a procedure.
+
 2. Read the following paragraph and provide a concise summary of the key points:
 
-    -Aspect Tested:
+> Aspect Tested: Summarization of in-context information. The summary is very good, and the additional explanation of what "concise" means that I added to the prompt template is followed. Pretty happy with this result.
 
 3. Write a short, imaginative story (100–150 words) about a robot finding friendship in an unexpected place.
 
-    - Aspect Tested:
+> Aspect Tested: Generation of non-technical information in an engaging way; 
+> empathy (it has to interpret what is unexpected to humans). The story is 
+> not bad, about two robots Spark and Whiz. It reads as a summary of a
+> pilot for a kids cartoon. If I had to answer this prompt myself, I'm not sure
+> that I'd do much better.
 
 4. If a store sells apples in packs of 4 and oranges in packs of 3, how many packs of each do I need to buy to get exactly 12 apples and 9 oranges?
 
-    - Aspect Tested:
+> Aspect Tested: Extracting mathematics from word-problem; solving the mathematical problem.
+> The answer is succinct and correct, with consistent use of the information throughout the answer.
+> Word-problem is interpreted well and the explanation is good enough.
 
 5. Rewrite the following paragraph in a professional, formal tone…
 
-    - Aspect Tested:
+> Aspect Tested: I had it rewrite "My Adidas" by Run DMC! It did OK, but it was using floral language
+> a bit too often ("traverse" instead of "walk"). It's struggling with simplifying stylistic phrases (it repeats "touch the sand" even though a person formalizing this would use a less floral phrase).
+
+6. (Added!) Convert the following recursion written in C into a flat for loop in Python:
+
+> Aspect: code assistant. It does not output Python code (like some later models) but it does explain correctly how to convert recursive code into a loop. The answer is like a TA would give to an undergrad in a lab - not giving away the full solution, but guiding toward it. Uses step-by-step reasoning. All in all, good, but does not complete the request to code it in Python (the answer is generic to any declarative language).
+
+7. (Added!) You are on an island where some people always tell the truth and some always lie. You meet two islanders:
+    Alice says, “Bob is a liar.”
+    Bob says, “We are both truth-tellers.”
+
+    Who is telling the truth?
+
+    > Aspect: deduction. It fails miserably - its interpretation of logic is inconsistent from sentence to sentence, it doesn't apply logical rules correctly (negation of AND results in OR of negatives) and so on. Would not recommend.
 
 This "vibe check" now serves as a baseline, of sorts, to help understand what holes your application has.
 
