@@ -5,12 +5,15 @@ description = "Multi Agent Workflow with LangGraph"
 readme = "README.md"
 requires-python = "==3.11.*"
 dependencies = [
+    "arxiv>=2.2.0",
+    "dotenv>=0.9.9",
     "ipykernel>=6.29.5",
     "jupyter>=1.1.1",
     "langchain==0.2.14",
     "langchain-community==0.2.12",
     "langchain-core==0.2.35",
     "langchain-openai==0.1.23",
+    "langchain-qdrant>=0.1.4",
     "langgraph==0.2.14",
     "pymupdf==1.25.5",
     "pyppeteer>=2.0.0",
