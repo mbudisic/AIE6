@@ -14,7 +14,9 @@ dependencies = [
     "langgraph==0.2.61",
     "nltk>=3.9.1",
     "numpy>=2.2.2",
+    "plotly>=6.0.1",
     "ragas==0.2.15",
     "scipy>=1.15.2",
     "unstructured>=0.14.8",
+    "wandb>=0.19.10",
 ]
