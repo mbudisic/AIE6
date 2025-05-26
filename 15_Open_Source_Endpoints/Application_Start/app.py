@@ -42,15 +42,19 @@ HF_TOKEN = os.environ["HF_TOKEN"]
 """
 ### 1. CREATE TEXT LOADER AND LOAD DOCUMENTS
 ### NOTE: PAY ATTENTION TO THE PATH THEY ARE IN. 
-text_loader = 
-documents = 
+text_loader = TextLoader("./data/paul_graham_essays.txt")
+documents = text_loader.load()
 
 ### 2. CREATE TEXT SPLITTER AND SPLIT DOCUMENTS
-text_splitter = 
-split_documents = 
+text_splitter = RecursiveCharacterTextSplitter(chunk_size=1000, chunk_overlap=30)
+split_documents = text_splitter.split_documents(documents)
 
 ### 3. LOAD HUGGINGFACE EMBEDDINGS
-hf_embeddings = 
+hf_embeddings = HuggingFaceEndpointEmbeddings(
+    model=HF_EMBED_ENDPOINT,
+    task="feature-extraction",
+    huggingfacehub_api_token=HF_TOKEN,
+)
 
 async def add_documents_async(vectorstore, documents):
     await vectorstore.aadd_documents(documents)
@@ -81,9 +85,9 @@ async def main():
             pbar = tqdm(total=len(batch), desc=f"Batch {i+1}/{len(batches)}", position=i)
             pbars.append(pbar)
             
-            if i == 0:
+            if i == 0: # first batch is processed directly to initialize vectorstore
                 vectorstore = await process_batch(None, batch, True, pbar)
-            else:
+            else: # the remaining batches are processed in parallel
                 tasks.append(process_batch(vectorstore, batch, False, pbar))
         
         if tasks:
@@ -110,17 +114,38 @@ hf_retriever = asyncio.run(run())
 2. Create a Prompt Template from the String Template
 """
 ### 1. DEFINE STRING TEMPLATE
-RAG_PROMPT_TEMPLATE = 
+RAG_PROMPT_TEMPLATE = """\
+<|start_header_id|>system<|end_header_id|>
+You are a helpful assistant. You answer user questions based on provided context. If you can't answer the question with the provided context, say you don't know.<|eot_id|>
+
+<|start_header_id|>user<|end_header_id|>
+User Query:
+{query}
+
+Context:
+{context}<|eot_id|>
+
+<|start_header_id|>assistant<|end_header_id|>
+"""
 
 ### 2. CREATE PROMPT TEMPLATE
-rag_prompt =
+rag_prompt = PromptTemplate.from_template(RAG_PROMPT_TEMPLATE)
 
 # -- GENERATION -- #
 """
 1. Create a HuggingFaceEndpoint for the LLM
 """
 ### 1. CREATE HUGGINGFACE ENDPOINT FOR LLM
-hf_llm = 
+hf_llm = HuggingFaceEndpoint(
+    endpoint_url=f"{HF_LLM_ENDPOINT}",
+    task="text-generation",
+    max_new_tokens=512,
+    top_k=10,
+    top_p=0.95,
+    typical_p=0.95,
+    temperature=0.01,
+    repetition_penalty=1.03,
+)
 
 @cl.author_rename
 def rename(original_author: str):
